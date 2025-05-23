@@ -9,3 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias Product.Repo
+alias Product.RBSProducts
+alias Faker.Commerce
+
+for _ <- 1..10 do
+  Repo.insert!(%RBSProducts.RBSProduct{name: Commerce.product_name, price_idr: trunc(Commerce.price) * 1000})
+end

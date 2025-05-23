@@ -23,7 +23,7 @@ defmodule ProductWeb.Router do
   # Other scopes may use custom stacks.
   scope "/api", ProductWeb do
     pipe_through :api
-    resources "/rbs_products", RBSProductController, except: [:new, :edit]
+    resources "/products", RBSProductController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
