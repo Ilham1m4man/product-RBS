@@ -2,6 +2,7 @@ defmodule ProductWeb.RBSProductController do
   use ProductWeb, :controller
 
   require Logger
+  alias Utils.ProductCache
   alias Product.Repo
   alias Product.RBSProducts
   alias Product.RBSProducts.RBSProduct
@@ -9,8 +10,15 @@ defmodule ProductWeb.RBSProductController do
   action_fallback ProductWeb.FallbackController
 
   def index(conn, params) do
-    rbs_products = RBSProduct |> Repo.paginate(params)
-    render(conn, :index, rbs_products: rbs_products.entries)
+    case ProductCache.get(params) do
+      {:ok, nil} ->
+        rbs_products = RBSProduct |> Repo.paginate(params)
+        ProductCache.put(params, rbs_products)
+        render(conn, :index, rbs_products: rbs_products.entries)
+
+        {:ok, data} ->
+        render(conn, :index, rbs_products: data.entries)
+    end
   end
 
   def create(conn, %{"rbs_product" => rbs_product_params}) do
@@ -30,7 +38,8 @@ defmodule ProductWeb.RBSProductController do
   def update(conn, %{"id" => id, "rbs_product" => rbs_product_params}) do
     rbs_product = RBSProducts.get_rbs_product!(id)
 
-    with {:ok, %RBSProduct{} = rbs_product} <- RBSProducts.update_rbs_product(rbs_product, rbs_product_params) do
+    with {:ok, %RBSProduct{} = rbs_product} <-
+           RBSProducts.update_rbs_product(rbs_product, rbs_product_params) do
       render(conn, :show, rbs_product: rbs_product)
     end
   end

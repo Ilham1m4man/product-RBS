@@ -17,7 +17,8 @@ defmodule Product.Application do
       # Start a worker by calling: Product.Worker.start_link(arg)
       # {Product.Worker, arg},
       # Start to serve requests, typically the last entry
-      ProductWeb.Endpoint
+      ProductWeb.Endpoint,
+      {Cachex, [:product_cache]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

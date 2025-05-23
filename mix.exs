@@ -61,7 +61,8 @@ defmodule Product.MixProject do
       {:httpoison, "~> 2.0"},
       {:faker, "~> 0.19.0-alpha.1", runtime: false},
       {:scrivener_ecto, "~> 3.0"},
-      {:poison, "~> 6.0"}
+      {:poison, "~> 6.0"},
+      {:cachex, "~> 4.0"}
     ]
   end
 
