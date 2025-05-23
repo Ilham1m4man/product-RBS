@@ -24,10 +24,7 @@ defmodule ProductWeb.RBSProductJSON do
   end
 
   defp singularData(%RBSProduct{} = rbs_product) do
-    url = "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/usd.json"
-    headers = []
-
-    usd_rates = Poison.Parser.parse!(HTTPoison.get!(url, headers).body, %{keys: :atoms}).usd.idr
+    usd_rates = ExchangeRate.usd_rate()
     %{
       id: rbs_product.id,
       name: rbs_product.name,
